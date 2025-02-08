@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Life Expectancy Prediction</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        body {
+            background: linear-gradient(to right, #0066cc, #3399ff); /* Smooth gradient */
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .card {
+            background-color: rgba(255, 255, 255, 0.95); /* Slight transparency */
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3); /* Soft shadow */
+            max-width: 800px;
+            width: 100%;
+            overflow-y: auto;
+            max-height: 90vh; /* Allow scrolling when content exceeds viewport */
+        }
+
+        h2 {
+            color: #003366;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+
+        .form-label {
+            color: #003366;
+            font-weight: bold;
+        }
+
+        .form-control {
+            border: 2px solid #003366;
+            border-radius: 10px;
+            padding: 10px;
+        }
+
+        .form-control:focus {
+            box-shadow: 0 0 10px rgba(0, 51, 102, 0.8);
+            border-color: #003366;
+        }
+
+        .btn {
+            background: linear-gradient(to right, #003366, #001529);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            padding: 10px 20px;
+            font-size: 18px;
+            font-weight: bold;
+            width: 100%;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .btn:hover {
+            background: linear-gradient(to right, #001529, #003366);
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(0, 51, 102, 0.5);
+        }
+
+        /* Custom scrollbar styling */
+        .card::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .card::-webkit-scrollbar-thumb {
+            background: #003366;
+            border-radius: 10px;
+        }
+
+        .card::-webkit-scrollbar-thumb:hover {
+            background: #001529;
+        }
+
+        .mb-3 {
+            margin-bottom: 20px;
+        }
+
+        .form-select {
+            border: 2px solid #003366;
+            border-radius: 10px;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2>Predict Your Life Expectancy</h2>
+        <form method="POST" action="/predict">
+            <div class="mb-3">
+                <label for="age" class="form-label">Age</label>
+                <input type="number" class="form-control" id="age" name="age" required min="0" />
+            </div>
+            <div class="mb-3">
+                <label for="bmr" class="form-label">BMR</label>
+                <input type="number" class="form-control" id="bmr" name="bmr" required />
+            </div>
+            <div class="mb-3">
+                <label for="diabetes" class="form-label">Diabetes (0 = No, 1 = Yes)</label>
+                <input type="number" class="form-control" id="diabetes" name="diabetes" required min="0" max="1" value="0" />
+            </div>
+            <div class="mb-3">
+                <label for="blood_pressure" class="form-label">Blood Pressure</label>
+                <input type="number" class="form-control" id="blood_pressure" name="blood_pressure" required />
+            </div>
+            <div class="mb-3">
+                <label for="height" class="form-label">Height (cm)</label>
+                <input type="number" class="form-control" id="height" name="height" required />
+            </div>
+            <div class="mb-3">
+                <label for="weight" class="form-label">Weight (kg)</label>
+                <input type="number" class="form-control" id="weight" name="weight" required />
+            </div>
+            <div class="mb-3">
+                <label for="smoking" class="form-label">Smoking (0 = No, 1 = Yes)</label>
+                <input type="number" class="form-control" id="smoking" name="smoking" required min="0" max="1" value="0" />
+            </div>
+            <div class="mb-3">
+                <label for="alcohol" class="form-label">Alcohol (0 = No, 1 = Yes)</label>
+                <input type="number" class="form-control" id="alcohol" name="alcohol" required min="0" max="1" value="0" />
+            </div>
+            <div class="mb-3">
+                <label for="hiv" class="form-label">HIV (0 = No, 1 = Yes)</label>
+                <input type="number" class="form-control" id="hiv" name="hiv" required min="0" max="1" value="0" />
+            </div>
+            <div class="mb-3">
+                <label for="cancer" class="form-label">Cancer Stage</label>
+                <select class="form-select" id="cancer" name="cancer" required>
+                    <option value="0">No Cancer</option>
+                    <option value="1">Stage 1</option>
+                    <option value="2">Stage 2</option>
+                    <option value="3">Stage 3</option>
+                    <option value="4">Stage 4</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="hepatitis_b" class="form-label">Hepatitis B (0 = No, 1 = Yes)</label>
+                <input type="number" class="form-control" id="hepatitis_b" name="hepatitis_b" required min="0" max="1" value="0" />
+            </div>
+            <div class="mb-3">
+                <label for="meningitis" class="form-label">Meningitis (0 = No, 1 = Yes)</label>
+                <input type="number" class="form-control" id="meningitis" name="meningitis" required min="0" max="1" value="0" />
+            </div>
+            <div class="mb-3">
+                <label for="kidney_failure" class="form-label">Kidney Failure (0 = No, 1 = Yes)</label>
+                <input type="number" class="form-control" id="kidney_failure" name="kidney_failure" required min="0" max="1" value="0" />
+            </div>
+            <div class="mb-3">
+                <label for="stroke" class="form-label">Stroke (0 = No, 1 = Yes)</label>
+                <input type="number" class="form-control" id="stroke" name="stroke" required min="0" max="1" value="0" />
+            </div>
+            <div class="mb-3">
+                <label for="heartdisease" class="form-label">Heart Disease (0 = No, 1 = Yes)</label>
+                <input type="number" class="form-control" id="heartdisease" name="heartdisease" required min="0" max="1" value="0" />
+            </div>
+            <div class="mb-3">
+                <label for="tuberculosis" class="form-label">Tuberculosis (0 = No, 1 = Yes)</label>
+                <input type="number" class="form-control" id="tuberculosis" name="tuberculosis" required min="0" max="1" value="0" />
+            </div>
+            <button type="submit" class="btn">Predict Life Expectancy</button>
+        </form>
+    </div>
+</body>
+</html>
